@@ -41,6 +41,8 @@ public class Playerscript : MonoBehaviour
         if (count >= 12)
         {
             winTextObject.SetActive(true);
+
+            Destroy(GameObject.FindGameObjectWithTag("Enemy"));
         }
     }
 
@@ -50,6 +52,18 @@ public class Playerscript : MonoBehaviour
         Vector3 movement = new Vector3(movementX, 0.0f, movementY);
 
         rb.AddForce(movement * speed);
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            // Destroy the current object
+            Destroy(gameObject);
+            // Update the winText to display "You Lose!"
+            winTextObject.gameObject.SetActive(true);
+            winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+        }
     }
 
     void OnTriggerEnter(Collider other)
